@@ -265,7 +265,7 @@ with tab3:
                 st.info("⚠️ PR curve not found")
 
     # -------------------------
-    # CONFUSION MATRIX
+    # CONFUSION MATRIx
     # -------------------------
     st.markdown("### 🎯 Confusion Matrix")
     cm_path = "../images/face_cv_outputs/confusion_matrix_normalized.png"
