@@ -24,15 +24,15 @@ torchvision==0.25.0
 torchutils==0.0.4
 
 # === КОМПЬЮТЕРНОЕ ЗРЕНИЕ ===
-opencv-python==4.9.0.80
-opencv-contrib-python==4.9.0.80
+opencv-python
+opencv-contrib-python
 pillow==12.1.1
 scikit-image==0.24.0
 albumentations==1.4.0
 kornia==0.7.3
 
 # === YOLO И U-NET ===
-ultralytics==8.3.0
+ultralytics
 segmentation-models-pytorch==0.3.4
 
 # === ВИЗУАЛИЗАЦИЯ И ЛОГИРОВАНИЕ ===
