@@ -1,5 +1,5 @@
-#dataset
-#data/
+dataset
+data/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -207,4 +207,3 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-.DS_Store
