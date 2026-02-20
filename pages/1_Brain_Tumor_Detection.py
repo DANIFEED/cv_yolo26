@@ -57,10 +57,10 @@ confidence = st.sidebar.slider(
     0.05, 1.0, 0.25, 0.05
 )
 
-MODEL_PATH = "models/best_brain.pt"   # TODO: положить сюда реальные веса !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+MODEL_PATH = "models/best_brain.pt"
 
 # --------------------------------------------------
-# Upload Section (ТРИ ВКЛАДКИ)
+# Upload Section 
 # --------------------------------------------------
 
 st.subheader("👉 Input & Model Overview")
@@ -74,7 +74,7 @@ tab1, tab2, tab3 = st.tabs([
 images = []
 
 # --------------------------------------------------
-# TAB 1 — Upload Files (ТОЛЬКО ЗАГРУЗКА)
+# TAB 1 — Upload Files
 # --------------------------------------------------
 
 with tab1:
@@ -90,7 +90,7 @@ with tab1:
             images.append((file.name, img))
 
 # --------------------------------------------------
-# TAB 2 — Load from URL (ТОЛЬКО URL)
+# TAB 2 — Load from URL
 # --------------------------------------------------
 
 with tab2:
@@ -105,7 +105,7 @@ with tab2:
                 st.error("⚠ Не удалось загрузить изображение. Проверь URL.")
 
 # --------------------------------------------------
-# TAB 3 — Model Results (Model Information)
+# TAB 3 — Model Results
 # --------------------------------------------------
 
 with tab3:
@@ -116,33 +116,31 @@ with tab3:
     <div class="card">
     <div class="small-text">
 
-    • Model: YOLOv11 (указать версию: n / s / m)  #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    • Model: <b>YOLOv11-L</b><br>
     <br>
-    • Epochs trained: <b>TODO</b>   #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    • Epochs trained: <b> 148 (Early Stopping)</b>
     <br>
-    • Train size: <b>TODO</b>       #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    • Train size: <b>255 images</b>
     <br>
-    • Validation size: <b>TODO</b>  #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    • Validation size: <b>63 images</b>
 
-    <br>
+    <br><br>
 
-    <div class="metric">mAP50: TODO</div>       #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    <div class="metric">mAP50-95: TODO</div>    #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    <div class="metric">Precision: <b>0.74</b></div>
+    <div class="metric">Recall: <b>0.769</b></div>
+    <div class="metric">mAP50: <b>0.804</b></div>
+    <div class="metric">mAP50-95: <b>0.603</b></div>
 
     </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # -------------------------
-    # TRAINING CURVES (если нужны)
-    # -------------------------
-
+    # Metrics images
     st.markdown("### Training Curves")
 
-    loss_path = "models/metrics_brain/loss_curve.png"   #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    pr_path   = "models/metrics_brain/pr_curve.png"     #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    cm_path   = "models/metrics_brain/confusion_matrix.png"  #  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+    loss_path = "models/metrics_brain/loss_curve.jpg"
+    pr_path   = "models/metrics_brain/pr_curve.jpg"
+    cm_path   = "models/metrics_brain/confusion_matrix.jpg"
 
     col1, col2 = st.columns(2)
 
@@ -164,25 +162,23 @@ with tab3:
     else:
         st.info("Confusion matrix not available.")
 
+
 # --------------------------------------------------
-# PREDICTION SECTION (вне вкладок)
 # --------------------------------------------------
 
 st.divider()
+st.subheader("Predictions")
 
-if images:
-
-    # Загружаем модель
+if not images:
+    st.info("Загрузите изображения во вкладках Upload или URL.")
+else:
     try:
         model = YOLO(MODEL_PATH)
     except:
         st.error("Model weights not found. Проверь путь к best_brain.pt.")
         st.stop()
 
-    st.subheader("Predictions")
-
     for name, img in images:
-
         col1, col2 = st.columns(2)
 
         with col1:
@@ -191,12 +187,6 @@ if images:
 
         with col2:
             st.caption("Detection Result")
-
             results = model.predict(img, conf=confidence, verbose=False)
-            plotted = results[0].plot()
-            plotted = plotted[..., ::-1]  # BGR → RGB
-
+            plotted = results[0].plot()[..., ::-1]
             st.image(plotted, use_container_width=True)
-
-else:
-    st.info("Загрузите изображения для инференса.")
